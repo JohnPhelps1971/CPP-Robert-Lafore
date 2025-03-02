@@ -1,5 +1,12 @@
 # Object-Oriented Programming in C++ [Fourth Edition] - Robert Lafore [Complete Solution]
 
+[Updated]
+02 March 2025
+Updated to compile in VS Community 2022 (64-bit) V17.12.4
+Updates are in the msoftcon.cpp file and have been commented.
+
+Original detail is below.
+========================
 Here I've complied all the programs and excercise solutions from the book Object-Oriented Programming in C++ [Fourth Edition] by Robert Lafore.
 
 ## Table of Contents
