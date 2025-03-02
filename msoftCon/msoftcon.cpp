@@ -5,6 +5,10 @@
 //in MCV++, /Tools/Options/Directories/Include/type path name
 
 #include "msoftcon.h"
+
+// Modified for VS Community 2022, to use the _TEXT macro
+#include "tchar.h"
+
 HANDLE hConsole;         //console handle
 char fill_char;          //character used for fill
 //--------------------------------------------------------------
@@ -12,7 +16,7 @@ void init_graphics()
    {
    COORD console_size = {80, 25};
    //open i/o channel to console screen
-   hConsole = CreateFile("CONOUT$", GENERIC_WRITE | GENERIC_READ,
+   hConsole = CreateFile(_TEXT("CONOUT$"), GENERIC_WRITE | GENERIC_READ,
                    FILE_SHARE_READ | FILE_SHARE_WRITE,
                    0L, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0L);
    //set to 80x25 screen size
@@ -52,7 +56,7 @@ void clear_screen()
    {
    set_cursor_pos(1, 25);
    for(int j=0; j<25; j++)
-      putch('\n');
+      _putch('\n');
    set_cursor_pos(1, 1);
    }
 //--------------------------------------------------------------
@@ -65,8 +69,8 @@ void clear_line()                    //clear to end of line
    {                                 //80 spaces
    //.....1234567890123456789012345678901234567890
    //.....0........1.........2.........3.........4 
-   cputs("                                        ");
-   cputs("                                        ");
+   _cputs("                                        ");
+   _cputs("                                        ");
    }
 //--------------------------------------------------------------
 void draw_rectangle(int left, int top, int right, int bottom) 
@@ -74,14 +78,17 @@ void draw_rectangle(int left, int top, int right, int bottom)
    char temp[80];
    int width = right - left + 1;
 
-   for(int j=0; j<width; j++)      //string of squares
+   // Modified for VS Community 2022
+   int j;   // Declared here, not in the for loop
+
+   for(/*int*/ j = 0; j<width; j++)      //string of squares
       temp[j] = fill_char;   
    temp[j] = 0;                    //null
 
    for(int y=top; y<=bottom; y++)  //stack of strings 
       {
       set_cursor_pos(left, y);
-      cputs(temp);
+      _cputs(temp);
       }
    }
 //--------------------------------------------------------------
@@ -99,8 +106,8 @@ void draw_circle(int xC, int yC, int radius)
       x = xC-xN;
       while(x <= xC+xN)          //fill two horizontal lines
          {                       //one for each half circle
-         set_cursor_pos(x,   yC-yN); putch(fill_char);  //top
-         set_cursor_pos(x++, yC+yN); putch(fill_char);  //bottom
+         set_cursor_pos(x,   yC-yN); _putch(fill_char);  //top
+         set_cursor_pos(x++, yC+yN); _putch(fill_char);  //bottom
          }
       }  //end for
    }
@@ -139,7 +146,7 @@ void draw_line(int x1, int y1, int x2, int y2)
             set_cursor_pos(w, z);
          else
             set_cursor_pos(z, w);
-         putch(fill_char);
+         _putch(fill_char);
          }
       }
    }
@@ -153,7 +160,7 @@ void draw_pyramid(int x1, int y1, int height)
       for(x=x1-incr; x<=x1+incr; x++)
          {
          set_cursor_pos(x, y);
-         putch(fill_char);
+         _putch(fill_char);
          }
       }
    }
